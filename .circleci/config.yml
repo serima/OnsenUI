@@ -15,7 +15,7 @@ jobs:
             echo "node $(node -v)"
             echo "npm v$(npm --version)"
             echo "$(google-chrome --version)"
-      - run: yarn global add coveralls gulp
+      - run: sudo yarn global add coveralls gulp
       - run: cd css-components; yarn install --pure-lockfile
       - run: yarn install --pure-lockfile; gulp build
       - run: cd bindings/angular2; yarn install --pure-lockfile
