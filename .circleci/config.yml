@@ -20,11 +20,27 @@ jobs:
           name: Instal coveralls and gulp globally
           command: sudo yarn global add coveralls gulp
 
+      - restore_cache:
+          keys:
+            - v1-css-components-cache-{{ checksum "css-components/package.json" }}
+            - v1-css-components-cache-
+
       - run:
           name: Prepare for css-components
           command: |
             cd css-components
             yarn install --pure-lockfile
+
+      - save_cache:
+          key: v1-css-components-cache-{{ checksum "css-components/package.json" }}
+          paths:
+            - css-components/node_modules
+
+      - save_cache:
+          key: v1-css-components-cache-
+          paths:
+            - css-components/node_modules
+
 
       - run:
           name: yarn install
