@@ -10,7 +10,7 @@ jobs:
     steps:
       - checkout
       - run:
-          name: System information
+          name: Print system information
           command: |
             echo "node $(node -v)"
             echo "npm v$(npm --version)"
@@ -22,8 +22,7 @@ jobs:
 
       - restore_cache:
           keys:
-            - v1-css-components-cache-{{ checksum "css-components/package.json" }}
-            - v1-css-components-cache-
+            - v1-css-components-cache-{{ checksum "css-components/yarn.lock" }}
 
       - run:
           name: Install css-components dependencies
@@ -32,23 +31,41 @@ jobs:
             yarn install --pure-lockfile
 
       - save_cache:
-          key: v1-css-components-cache-{{ checksum "css-components/package.json" }}
+          key: v1-css-components-cache-{{ checksum "css-components/yarn.lock" }}
           paths:
             - css-components/node_modules
+
+      - restore_cache:
+          keys:
+            - v1-onsenui-cache-{{ checksum "yarn.lock" }}
 
       - run:
           name: Install dependencies
           command: yarn install --pure-lockfile
 
+      - save_cache:
+          key: v1-onsenui-cache-{{ checksum "yarn.lock" }}
+          paths:
+            - node_modules
+
       - run:
           name: gulp build
           command: gulp build
+
+      - restore_cache:
+          keys:
+            - v1-angular2-cache-{{ checksum "bindings/angular2/yarn.lock" }}
 
       - run:
           name: Install Angular 2 dependencies
           command: |
             cd bindings/angular2
             yarn install --pure-lockfile
+
+      - save_cache:
+          key: v1-angular2-cache-{{ checksum "bindings/angular2/yarn.lock" }}
+          paths:
+            - node_modules
 
       - run:
           name: Install React dependencies
