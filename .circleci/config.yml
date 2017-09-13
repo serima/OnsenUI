@@ -33,7 +33,7 @@ jobs:
       - save_cache:
           key: v1-css-components-cache-{{ checksum "css-components/yarn.lock" }}
           paths:
-            - css-components/node_modules
+            - ./css-components/node_modules
 
       - restore_cache:
           keys:
@@ -46,7 +46,7 @@ jobs:
       - save_cache:
           key: v1-onsenui-cache-{{ checksum "yarn.lock" }}
           paths:
-            - node_modules
+            - ./node_modules
 
       - run:
           name: gulp build
@@ -65,7 +65,11 @@ jobs:
       - save_cache:
           key: v1-angular2-cache-{{ checksum "bindings/angular2/yarn.lock" }}
           paths:
-            - node_modules
+            - ./bindings/angular2/node_modules
+
+      - restore_cache:
+          keys:
+            - v1-react-cache-{{ checksum "bindings/react/yarn.lock" }}
 
       - run:
           name: Install React dependencies
@@ -73,11 +77,26 @@ jobs:
             cd bindings/react
             yarn install --pure-lockfile
 
+      - save_cache:
+          key: v1-react-cache-{{ checksum "bindings/react/yarn.lock" }}
+          paths:
+            - ./bindings/react/node_modules
+
+      - restore_cache:
+          keys:
+            - v1-vue-cache-{{ checksum "bindings/vue/yarn.lock" }}
+
       - run:
           name: Install Vue dependencies
           command: |
             cd bindings/vue
             yarn install --pure-lockfile
+
+      - save_cache:
+          key: v1-vue-cache-{{ checksum "bindings/vue/yarn.lock" }}
+          paths:
+            - ./bindings/vue/node_modules
+
 
 #      - restore_cache:
 #          key: v1-npm-dependencies-{{ .Branch }}-{{ checksum "package.json" }}
