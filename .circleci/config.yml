@@ -22,7 +22,7 @@ jobs:
 
       - restore_cache:
           keys:
-            - v1-css-components-cache-{{ checksum "css-components/yarn.lock" }}
+            - v1-css-components-cache-{{ .Branch }}-{{ checksum "css-components/yarn.lock" }}
 
       - run:
           name: Install css-components dependencies
@@ -31,20 +31,20 @@ jobs:
             yarn install --pure-lockfile
 
       - save_cache:
-          key: v1-css-components-cache-{{ checksum "css-components/yarn.lock" }}
+          key: v1-css-components-cache-{{ .Branch }}-{{ checksum "css-components/yarn.lock" }}
           paths:
             - ./css-components/node_modules
 
       - restore_cache:
           keys:
-            - v1-onsenui-cache-{{ checksum "yarn.lock" }}
+            - v1-onsenui-cache-{{ .Branch }}-{{ checksum "yarn.lock" }}
 
       - run:
           name: Install dependencies
           command: yarn install --pure-lockfile
 
       - save_cache:
-          key: v1-onsenui-cache-{{ checksum "yarn.lock" }}
+          key: v1-onsenui-cache-{{ .Branch }}-{{ checksum "yarn.lock" }}
           paths:
             - ./node_modules
 
@@ -54,7 +54,7 @@ jobs:
 
       - restore_cache:
           keys:
-            - v1-angular2-cache-{{ checksum "bindings/angular2/yarn.lock" }}
+            - v1-angular2-cache-{{ .Branch }}-{{ checksum "bindings/angular2/yarn.lock" }}
 
       - run:
           name: Install Angular 2 dependencies
@@ -63,13 +63,13 @@ jobs:
             yarn install --pure-lockfile
 
       - save_cache:
-          key: v1-angular2-cache-{{ checksum "bindings/angular2/yarn.lock" }}
+          key: v1-angular2-cache-{{ .Branch }}-{{ checksum "bindings/angular2/yarn.lock" }}
           paths:
             - ./bindings/angular2/node_modules
 
       - restore_cache:
           keys:
-            - v1-react-cache-{{ checksum "bindings/react/yarn.lock" }}
+            - v1-react-cache-{{ .Branch }}-{{ checksum "bindings/react/yarn.lock" }}
 
       - run:
           name: Install React dependencies
@@ -78,13 +78,13 @@ jobs:
             yarn install --pure-lockfile
 
       - save_cache:
-          key: v1-react-cache-{{ checksum "bindings/react/yarn.lock" }}
+          key: v1-react-cache-{{ .Branch }}-{{ checksum "bindings/react/yarn.lock" }}
           paths:
             - ./bindings/react/node_modules
 
       - restore_cache:
           keys:
-            - v1-vue-cache-{{ checksum "bindings/vue/yarn.lock" }}
+            - v1-vue-cache-{{ .Branch }}-{{ checksum "bindings/vue/yarn.lock" }}
 
       - run:
           name: Install Vue dependencies
@@ -93,7 +93,7 @@ jobs:
             yarn install --pure-lockfile
 
       - save_cache:
-          key: v1-vue-cache-{{ checksum "bindings/vue/yarn.lock" }}
+          key: v1-vue-cache-{{ .Branch }}-{{ checksum "bindings/vue/yarn.lock" }}
           paths:
             - ./bindings/vue/node_modules
 
