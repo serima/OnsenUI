@@ -1,0 +1,45 @@
+version: 2
+jobs:
+  build:
+    working_directory: ~/working_directory
+    docker:
+      - image: circleci/node:6-browsers
+        env:
+          - DISPLAY=:99
+          - CHROME_BIN=/usr/bin/google-chrome
+    steps:
+      - checkout
+      - run:
+          name: System information
+          command: |
+            echo "node $(node -v)"
+            echo "npm v$(npm --version)"
+            echo "$(google-chrome --version)"
+      - run: yarn global add coveralls gulp
+      - run: cd css-components; yarn install --pure-lockfile
+      - run: yarn install --pure-lockfile; gulp build
+      - run: cd bindings/angular2; yarn install --pure-lockfile
+      - run: cd bindings/react; yarn install --pure-lockfile
+      - run: bindings/vue; yarn install --pure-lockfile
+      - run: cd css-components; yarn install --pure-lockfile
+      - run: cd css-components; yarn install --pure-lockfile
+      - run: cd css-components; yarn install --pure-lockfile
+      - run: cd css-components; yarn install --pure-lockfile
+#      - restore_cache:
+#          key: v1-npm-dependencies-{{ .Branch }}-{{ checksum "package.json" }}
+#      - run:
+#          name: Install dependencies
+#          command: npm install
+#      - save_cache:
+#          key: v1-npm-dependencies-{{ .Branch }}-{{ checksum "package.json" }}
+#          paths:
+#            - ./node_modules
+      - run:
+          name: Run Tests
+          command: npm run test:skip-build
+
+      - run: cd bindings/angular1; gulp e2e-test # bindings/angular1 has no package.json.
+      - run: cd bindings/angular2; npm test
+      - run: cd bindings/react; npm test
+      - run: cd bindings/react; npm run build
+      - run: cd bindings/vue; npm test
