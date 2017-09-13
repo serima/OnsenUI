@@ -26,7 +26,7 @@ jobs:
             - v1-css-components-cache-
 
       - run:
-          name: Prepare for css-components
+          name: Install css-components dependencies
           command: |
             cd css-components
             yarn install --pure-lockfile
@@ -36,14 +36,8 @@ jobs:
           paths:
             - css-components/node_modules
 
-      - save_cache:
-          key: v1-css-components-cache-
-          paths:
-            - css-components/node_modules
-
-
       - run:
-          name: yarn install
+          name: Install dependencies
           command: yarn install --pure-lockfile
 
       - run:
@@ -51,19 +45,19 @@ jobs:
           command: gulp build
 
       - run:
-          name: Prepare for Angular 2
+          name: Install Angular 2 dependencies
           command: |
             cd bindings/angular2
             yarn install --pure-lockfile
 
       - run:
-          name: Prepare for React
+          name: Install React dependencies
           command: |
             cd bindings/react
             yarn install --pure-lockfile
 
       - run:
-          name: Prepare for Vue
+          name: Install Vue dependencies
           command: |
             cd bindings/vue
             yarn install --pure-lockfile
@@ -86,3 +80,13 @@ jobs:
       - run: cd bindings/react; npm test
       - run: cd bindings/react; npm run build
       - run: cd bindings/vue; npm test
+      - run:
+          name: Save test results
+          command: |
+            mkdir -p ~/junit
+            find . -type f -regex "./core/test/unit/.*xml" -exec cp {} ~/junit/ \;
+            cat ./core/test/unit/coverage/*/lcov.info | coveralls || true # Ignore if this fails.
+      - store_test_results:
+          path: ~/junit
+      - store_artifacts:
+          path: ~/junit
