@@ -97,16 +97,6 @@ jobs:
           paths:
             - ./bindings/vue/node_modules
 
-
-#      - restore_cache:
-#          key: v1-npm-dependencies-{{ .Branch }}-{{ checksum "package.json" }}
-#      - run:
-#          name: Install dependencies
-#          command: npm install
-#      - save_cache:
-#          key: v1-npm-dependencies-{{ .Branch }}-{{ checksum "package.json" }}
-#          paths:
-#            - ./node_modules
       - run:
           name: Run Tests
           command: npm run test:skip-build
