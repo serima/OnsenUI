@@ -126,6 +126,6 @@ jobs:
           name: Deploy
           command: |
             mkdir -p ~/artifacts
-            touch ~/artifacts/touch.txt
+            cat "text" > ~/artifacts/touch.txt
       - store_artifacts:
           path: ~/artifacts
