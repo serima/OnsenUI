@@ -384,7 +384,7 @@ gulp.task('unit-test',
 
     (async () => {
       const specs = argv.specs || 'core/src/**/*.spec.js'; // you cannot use commas for --specs
-      const browsers = argv.browsers ? argv.browsers.split(',').map(s => s.trim()) : ['local_chrome_headless', 'remote_macos_elcapitan_safari_10'];
+      const browsers = argv.browsers ? argv.browsers.split(',').map(s => s.trim()) : ['local_chrome_headless'];
 
       let listOfSpecFiles;
       if (argv.separately) { // resolve glob pattern
