@@ -118,5 +118,9 @@ jobs:
             cat ./core/test/unit/coverage/*/lcov.info | coveralls || true # Ignore if this fails.
       - store_test_results:
           path: ~/junit
-      - store_artifacts:
-          path: ~/junit
+
+      - deploy:
+          command: |
+            if [ "${CIRCLE_BRANCH}" == "master" ]; then
+              ./scripts/nightly.sh $CIRCLE_BUILD_NUM $CIRCLE_SHA1 $CIRCLE_ARTIFACTS
+            fi
